@@ -6,12 +6,7 @@ A production-ready, fully accessible tab bar component for Salesforce Lightning 
 
 ## Component Architecture
 
-```
-c-dynamic-tabs                  ← Tab bar container + panel host
-└── <slot>
-    └── c-dynamic-tab-panel     ← Lazy-loaded panel wrapper (N instances)
-        └── <slot>              ← Consumer content lives here
-```
+<img width="4100" height="3100" alt="Dynamic Tabs Aarchitecture" src="https://github.com/user-attachments/assets/1472201a-b812-47b6-9e55-378752a0b4e3" />
 
 | Component | Purpose | `isExposed` |
 |-----------|---------|-------------|
@@ -267,9 +262,3 @@ force-app/main/default/lwc/
     ├── dynamicTabsDemo.css
     └── dynamicTabsDemo.js-meta.xml
 ```
-
----
-
-## License
-
-MIT — free for use in personal and commercial Salesforce projects.
