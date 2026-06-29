@@ -1,0 +1,133 @@
+<template>
+    <lightning-card title="Dynamic Tabs — Live Demo" icon-name="standard:canvas">
+        <div class="slds-p-around_medium">
+
+            <!-- ── Toolbar ─────────────────────────────────────────────── -->
+            <div class="slds-grid slds-gutters slds-m-bottom_medium slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                    <lightning-button
+                        label="Add New Tab"
+                        icon-name="utility:add"
+                        onclick={handleAddTab}>
+                    </lightning-button>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                    <lightning-button
+                        label="Increment Badge (Accounts)"
+                        icon-name="utility:notification"
+                        onclick={handleIncrementBadge}>
+                    </lightning-button>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                    <lightning-combobox
+                        name="variant"
+                        label="Variant"
+                        value={variant}
+                        options={variantOptions}
+                        onchange={handleVariantChange}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- ── Dynamic Tabs Component ──────────────────────────────── -->
+            <c-dynamic-tabs
+                variant={variant}
+                default-tab="accounts"
+                ontabchange={handleTabChange}
+                ontabclose={handleTabClose}>
+
+                <c-dynamic-tab-panel
+                    value="accounts"
+                    label="Accounts"
+                    icon-name="standard:account"
+                    badge-count={accountBadge}
+                    closeable="false">
+                    <div class="slds-p-around_medium">
+                        <p class="slds-text-heading_small slds-m-bottom_small">Accounts Panel</p>
+                        <lightning-datatable
+                            key-field="id"
+                            data={accountData}
+                            columns={accountColumns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+                </c-dynamic-tab-panel>
+
+                <c-dynamic-tab-panel
+                    value="contacts"
+                    label="Contacts"
+                    icon-name="standard:contact"
+                    badge-count={contactBadge}
+                    closeable="true">
+                    <div class="slds-p-around_medium">
+                        <p class="slds-text-heading_small slds-m-bottom_small">Contacts Panel</p>
+                        <p>Lazy-loaded: this panel renders only on first activation.</p>
+                        <ul class="slds-list_dotted slds-m-top_small">
+                            <template for:each={contactData} for:item="contact">
+                                <li key={contact.id}>{contact.name} — {contact.email}</li>
+                            </template>
+                        </ul>
+                    </div>
+                </c-dynamic-tab-panel>
+
+                <c-dynamic-tab-panel
+                    value="opportunities"
+                    label="Opportunities"
+                    icon-name="standard:opportunity"
+                    closeable="true">
+                    <div class="slds-p-around_medium">
+                        <p class="slds-text-heading_small slds-m-bottom_small">Opportunities Panel</p>
+                        <lightning-progress-bar value="65" size="large"></lightning-progress-bar>
+                        <p class="slds-m-top_small">Pipeline health: 65%</p>
+                    </div>
+                </c-dynamic-tab-panel>
+
+                <c-dynamic-tab-panel
+                    value="settings"
+                    label="Settings"
+                    icon-name="standard:settings"
+                    closeable="false"
+                    disabled="false">
+                    <div class="slds-p-around_medium">
+                        <p class="slds-text-heading_small slds-m-bottom_small">Settings Panel</p>
+                        <lightning-input type="toggle" label="Enable Notifications" checked></lightning-input>
+                        <lightning-input type="toggle" label="Dark Mode" class="slds-m-top_small"></lightning-input>
+                    </div>
+                </c-dynamic-tab-panel>
+
+                <!-- Dynamically added tabs render here -->
+                <template for:each={dynamicTabs} for:item="tab">
+                    <c-dynamic-tab-panel
+                        key={tab.value}
+                        value={tab.value}
+                        label={tab.label}
+                        icon-name={tab.iconName}
+                        closeable="true">
+                        <div class="slds-p-around_medium">
+                            <p>{tab.content}</p>
+                        </div>
+                    </c-dynamic-tab-panel>
+                </template>
+
+            </c-dynamic-tabs>
+
+            <!-- ── Event Log ───────────────────────────────────────────── -->
+            <div class="slds-m-top_medium">
+                <p class="slds-text-title_caps slds-m-bottom_x-small">Event Log</p>
+                <div class="event-log slds-box slds-box_x-small slds-theme_shade">
+                    <template for:each={eventLog} for:item="entry">
+                        <p key={entry.id} class="slds-text-body_small event-log-entry">
+                            <strong>{entry.time}</strong> — {entry.message}
+                        </p>
+                    </template>
+                    <template lwc:if={noEvents}>
+                        <p class="slds-text-body_small slds-text-color_weak">
+                            Interact with tabs to see events…
+                        </p>
+                    </template>
+                </div>
+            </div>
+
+        </div>
+    </lightning-card>
+</template>

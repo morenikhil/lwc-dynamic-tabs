@@ -1,0 +1,111 @@
+/* ── Tab Navigation Bar ─────────────────────────────────────────────────── */
+.slds-tabs_default__nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE */
+}
+
+.slds-tabs_default__nav::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── Tab List Item ──────────────────────────────────────────────────────── */
+.slds-tabs_default__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.slds-tabs_default__item .slds-tabs_default__link {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding-right: var(--lwc-spacingSmall, 0.5rem);
+}
+
+/* ── Tab Icon ───────────────────────────────────────────────────────────── */
+.tab-icon {
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+/* ── Badge ──────────────────────────────────────────────────────────────── */
+.tab-badge {
+    font-size: 0.65rem;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.3rem;
+    line-height: 1.25rem;
+    border-radius: 0.625rem;
+    background-color: var(--lwc-colorBrand, #0176d3);
+    color: #fff;
+    font-weight: 700;
+    transition: background-color 0.15s ease;
+}
+
+.tab-badge_active {
+    background-color: var(--lwc-colorBrandDarker, #014486);
+}
+
+/* ── Close Button ───────────────────────────────────────────────────────── */
+.tab-close-btn {
+    opacity: 0;
+    transition: opacity 0.15s ease, color 0.15s ease;
+    margin-left: 2px;
+    margin-right: 4px;
+    flex-shrink: 0;
+    color: var(--lwc-colorTextWeakest, #9faab5);
+}
+
+.slds-tabs_default__item:hover .tab-close-btn,
+.slds-tabs_default__item.slds-is-active .tab-close-btn {
+    opacity: 1;
+}
+
+.tab-close-btn:hover {
+    color: var(--lwc-colorTextError, #ba0517) !important;
+}
+
+/* ── Panels Container ───────────────────────────────────────────────────── */
+.tab-panels-container {
+    position: relative;
+}
+
+/* ── Disabled State ─────────────────────────────────────────────────────── */
+.slds-tabs_default__item.slds-is-disabled .slds-tabs_default__link {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* ── Scoped Variant ─────────────────────────────────────────────────────── */
+:host([variant="scoped"]) .slds-tabs_scoped__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* ── Keyboard Focus ─────────────────────────────────────────────────────── */
+.slds-tabs_default__link:focus {
+    outline: 2px solid var(--lwc-colorBrand, #0176d3);
+    outline-offset: -2px;
+    border-radius: 2px;
+}
+
+/* ── Responsive: small screens ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .slds-tabs_default__nav {
+        overflow-x: scroll;
+    }
+
+    .tab-label {
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

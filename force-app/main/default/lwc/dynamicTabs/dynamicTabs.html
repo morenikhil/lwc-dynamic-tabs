@@ -1,0 +1,74 @@
+<template>
+    <div class={containerClass}>
+        <!-- ═══════════════════════ TAB NAVIGATION BAR ═══════════════════════ -->
+        <ul class={navClass}
+            role="tablist"
+            aria-orientation="horizontal"
+            aria-label="Dynamic Tabs">
+            <template for:each={_tabItems} for:item="tab">
+                <li key={tab.value}
+                    class={tab.itemClass}
+                    role="presentation"
+                    title={tab.label}>
+
+                    <!-- Tab Anchor -->
+                    <a class="slds-tabs_default__link"
+                       href="javascript:void(0);"
+                       role="tab"
+                       tabindex={tab.tabIndex}
+                       aria-selected={tab.isActiveStr}
+                       aria-controls={tab.panelId}
+                       aria-disabled={tab.isDisabledStr}
+                       id={tab.anchorId}
+                       data-value={tab.value}
+                       onclick={handleTabClick}
+                       onkeydown={handleKeyDown}>
+
+                        <!-- Icon -->
+                        <template lwc:if={tab.iconName}>
+                            <lightning-icon
+                                icon-name={tab.iconName}
+                                size="x-small"
+                                class="slds-m-right_x-small tab-icon"
+                                aria-hidden="true">
+                            </lightning-icon>
+                        </template>
+
+                        <!-- Label -->
+                        <span class="tab-label">{tab.label}</span>
+
+                        <!-- Badge Count -->
+                        <template lwc:if={tab.showBadge}>
+                            <span class={tab.badgeClass}
+                                  aria-label={tab.badgeAriaLabel}>
+                                {tab.badgeDisplay}
+                            </span>
+                        </template>
+                    </a>
+
+                    <!-- Close Button -->
+                    <template lwc:if={tab.closeable}>
+                        <button class="slds-button slds-button_icon slds-button_icon-x-small tab-close-btn"
+                                type="button"
+                                data-value={tab.value}
+                                title={tab.closeTitle}
+                                aria-label={tab.closeTitle}
+                                onclick={handleTabClose}>
+                            <lightning-icon
+                                icon-name="utility:close"
+                                size="xx-small"
+                                alternative-text="Close">
+                            </lightning-icon>
+                        </button>
+                    </template>
+
+                </li>
+            </template>
+        </ul>
+
+        <!-- ═══════════════════════ PANEL CONTENT SLOT ═══════════════════════ -->
+        <div class="tab-panels-container">
+            <slot onslotchange={handleSlotChange}></slot>
+        </div>
+    </div>
+</template>

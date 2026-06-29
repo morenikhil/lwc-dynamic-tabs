@@ -1,0 +1,20 @@
+# Salesforce / SFDX
+.sfdx/
+.sf/
+*.dup
+package.xml
+
+# Node
+node_modules/
+.npm/
+
+# VS Code
+.vscode/settings.json
+.vscode/launch.json
+
+# Jest coverage
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db

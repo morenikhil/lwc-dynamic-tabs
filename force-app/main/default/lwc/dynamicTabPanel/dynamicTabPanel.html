@@ -1,0 +1,24 @@
+<template>
+    <div class={panelClass}
+         id={panelId}
+         role="tabpanel"
+         aria-labelledby={anchorId}
+         aria-hidden={isHiddenStr}>
+
+        <!-- Lazy: not yet activated → render nothing -->
+        <template lwc:if={_isLoaded}>
+            <slot></slot>
+        </template>
+
+        <!-- Loading placeholder shown on very first activation (optional skeleton) -->
+        <template lwc:elseif={_isActivating}>
+            <div class="slds-align_absolute-center panel-loading">
+                <lightning-spinner
+                    alternative-text="Loading panel content"
+                    size="small">
+                </lightning-spinner>
+            </div>
+        </template>
+
+    </div>
+</template>

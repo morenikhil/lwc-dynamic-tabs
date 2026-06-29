@@ -1,0 +1,15 @@
+.event-log {
+    max-height: 160px;
+    overflow-y: auto;
+    font-family: var(--lwc-fontFamilyMonospace, monospace);
+    background: var(--lwc-colorBackgroundAlt, #f3f3f3);
+}
+
+.event-log-entry {
+    padding: 2px 0;
+    border-bottom: 1px solid var(--lwc-colorBorderSeparator, #e5e5e5);
+}
+
+.event-log-entry:last-child {
+    border-bottom: none;
+}

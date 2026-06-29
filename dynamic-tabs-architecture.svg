@@ -1,0 +1,127 @@
+<svg viewBox="0 0 820 620" xmlns="http://www.w3.org/2000/svg" role="img" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12">
+  <title>Dynamic Tabs LWC Architecture Diagram</title>
+  <desc>Component hierarchy, data flow, events, and lazy-load lifecycle for the Salesforce LWC Dynamic Tabs component.</desc>
+
+  <rect width="820" height="620" fill="#f8f9fa" rx="8"/>
+
+  <text x="410" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#111">Dynamic Tabs — LWC Architecture</text>
+
+  <text x="16" y="60" font-size="10" font-weight="600" fill="#666" letter-spacing="1">CONSUMER</text>
+  <text x="16" y="185" font-size="10" font-weight="600" fill="#666" letter-spacing="1">c-dynamic-tabs  (container)</text>
+  <text x="16" y="340" font-size="10" font-weight="600" fill="#666" letter-spacing="1">c-dynamic-tab-panel  (×N, lazy)</text>
+  <text x="16" y="470" font-size="10" font-weight="600" fill="#666" letter-spacing="1">LAZY-LOAD LIFECYCLE</text>
+  <text x="450" y="185" font-size="10" font-weight="600" fill="#666" letter-spacing="1">EVENTS</text>
+  <text x="450" y="340" font-size="10" font-weight="600" fill="#666" letter-spacing="1">PUBLIC API</text>
+
+  <!-- CONSUMER BOX -->
+  <rect x="16" y="66" width="400" height="100" rx="6" fill="#ffffff" stroke="#d0d5dd" stroke-width="1.5"/>
+  <text x="28" y="86" font-size="11" font-weight="600" fill="#0176d3">consumer-page.html</text>
+  <text x="32" y="106" font-size="10.5" fill="#444">variant="default"  default-tab="accounts"</text>
+  <text x="32" y="122" font-size="10.5" fill="#444">ontabchange={handleTabChange}</text>
+  <text x="32" y="138" font-size="10.5" fill="#444">ontabclose={handleTabClose}</text>
+  <rect x="28" y="148" width="370" height="12" rx="2" fill="#f0f4ff"/>
+  <text x="36" y="158" font-size="9.5" fill="#666">&lt;c-dynamic-tab-panel value="accounts" label="Accounts" icon-name="standard:account" badge-count={n}&gt;</text>
+
+  <line x1="216" y1="166" x2="216" y2="192" stroke="#0176d3" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text x="222" y="182" font-size="9" fill="#0176d3">renders</text>
+
+  <!-- c-dynamic-tabs BOX -->
+  <rect x="16" y="195" width="400" height="124" rx="6" fill="#ffffff" stroke="#0176d3" stroke-width="2"/>
+  <rect x="28" y="208" width="376" height="34" rx="4" fill="#e8f2ff"/>
+  <text x="38" y="221" font-size="10" font-weight="600" fill="#0176d3">Tab Navigation Bar  &lt;ul role="tablist"&gt;</text>
+  <text x="38" y="234" font-size="9.5" fill="#555">Renders icon · label · badge · close-btn per tab  |  Keyboard: &#x2190; &#x2192; Home End</text>
+  <rect x="28" y="248" width="180" height="28" rx="4" fill="#f5f5f5"/>
+  <text x="38" y="259" font-size="9.5" fill="#333">_tabs[]  _activeTab</text>
+  <text x="38" y="270" font-size="9" fill="#888">_panelMap (value &#x2192; DOM ref)</text>
+  <rect x="214" y="248" width="190" height="28" rx="4" fill="#f5f5f5"/>
+  <text x="224" y="259" font-size="9.5" fill="#333">onslotchange &#x2192; reads @api props</text>
+  <text x="224" y="270" font-size="9" fill="#888">via assignedElements()</text>
+  <rect x="28" y="282" width="376" height="26" rx="4" fill="#fffbe6" stroke="#f0c000" stroke-width="1"/>
+  <text x="216" y="299" text-anchor="middle" font-size="10" fill="#7a5c00">&lt;slot&gt;  &#x2190; panel content assigned here</text>
+
+  <line x1="216" y1="319" x2="216" y2="347" stroke="#0176d3" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text x="222" y="337" font-size="9" fill="#0176d3">activate() / deactivate()</text>
+
+  <!-- c-dynamic-tab-panel BOX -->
+  <rect x="16" y="350" width="400" height="100" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="2"/>
+  <rect x="28" y="362" width="180" height="30" rx="4" fill="#f0fdf4"/>
+  <text x="38" y="374" font-size="9.5" fill="#166534">@api  value  label  iconName</text>
+  <text x="38" y="385" font-size="9.5" fill="#166534">badgeCount  closeable  disabled</text>
+  <rect x="214" y="362" width="190" height="30" rx="4" fill="#f0fdf4"/>
+  <text x="224" y="374" font-size="9.5" fill="#166534">@track  _isActive  _isLoaded</text>
+  <text x="224" y="385" font-size="9.5" fill="#166534">_isActivating</text>
+  <rect x="28" y="398" width="376" height="40" rx="4" fill="#fafafa" stroke="#e5e5e5" stroke-width="1"/>
+  <text x="38" y="412" font-size="9.5" fill="#444">lwc:if={_isLoaded} &#x2192; &lt;slot&gt;  (child components mount once)</text>
+  <text x="38" y="425" font-size="9.5" fill="#444">lwc:elseif={_isActivating} &#x2192; &lt;lightning-spinner&gt;</text>
+  <text x="38" y="436" font-size="9.5" fill="#888">else &#x2192; nothing rendered  &#x2190; lazy gate closed</text>
+
+  <!-- LAZY-LOAD LIFECYCLE -->
+  <rect x="16" y="478" width="400" height="126" rx="6" fill="#ffffff" stroke="#d0d5dd" stroke-width="1.5"/>
+  <rect x="28" y="490" width="80" height="26" rx="4" fill="#fee2e2"/>
+  <text x="68" y="507" text-anchor="middle" font-size="9.5" fill="#991b1b">Not Loaded</text>
+  <line x1="108" y1="503" x2="138" y2="503" stroke="#555" stroke-width="1.2" marker-end="url(#arr-gray)"/>
+  <text x="120" y="498" font-size="8.5" fill="#555">activate()</text>
+  <rect x="138" y="490" width="80" height="26" rx="4" fill="#fef9c3"/>
+  <text x="178" y="507" text-anchor="middle" font-size="9.5" fill="#713f12">Activating</text>
+  <text x="178" y="519" text-anchor="middle" font-size="8" fill="#888">spinner</text>
+  <line x1="218" y1="503" x2="248" y2="503" stroke="#555" stroke-width="1.2" marker-end="url(#arr-gray)"/>
+  <text x="228" y="498" font-size="8.5" fill="#555">Promise</text>
+  <rect x="248" y="490" width="82" height="26" rx="4" fill="#dcfce7"/>
+  <text x="289" y="507" text-anchor="middle" font-size="9.5" fill="#166534">Loaded+Active</text>
+  <line x1="330" y1="503" x2="358" y2="503" stroke="#555" stroke-width="1.2" marker-end="url(#arr-gray)"/>
+  <text x="334" y="498" font-size="8.5" fill="#555">deactivate()</text>
+  <rect x="358" y="490" width="46" height="26" rx="4" fill="#e0f2fe"/>
+  <text x="381" y="507" text-anchor="middle" font-size="9.5" fill="#075985">Hidden</text>
+  <path d="M 381 516 Q 381 540 289 540 Q 248 540 248 516" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arr-gray)"/>
+  <text x="310" y="552" text-anchor="middle" font-size="8.5" fill="#555">activate() again &#x2192; instant (already loaded)</text>
+  <text x="28" y="576" font-size="9" fill="#888">Lazy gate: slot content mounts ONCE on first activation. Subsequent switches are CSS-only.</text>
+  <text x="28" y="590" font-size="9" fill="#888">Child component state (form values, scroll position) is preserved across tab switches.</text>
+
+  <!-- EVENTS PANEL -->
+  <rect x="450" y="195" width="354" height="124" rx="6" fill="#ffffff" stroke="#d0d5dd" stroke-width="1.5"/>
+  <rect x="462" y="208" width="328" height="28" rx="4" fill="#e8f2ff"/>
+  <text x="474" y="221" font-size="10" font-weight="600" fill="#0176d3">tabchange</text>
+  <text x="474" y="232" font-size="9.5" fill="#555">{ value: string, previousValue: string }  bubbles+composed</text>
+  <rect x="462" y="242" width="328" height="28" rx="4" fill="#fff0f0"/>
+  <text x="474" y="255" font-size="10" font-weight="600" fill="#c0392b">tabclose</text>
+  <text x="474" y="266" font-size="9.5" fill="#555">{ value: string }  bubbles+composed — parent removes panel</text>
+  <rect x="462" y="276" width="328" height="28" rx="4" fill="#fafafa" stroke="#e5e5e5" stroke-width="1"/>
+  <text x="474" y="289" font-size="10" font-weight="600" fill="#888">slotchange  (internal)</text>
+  <text x="474" y="300" font-size="9.5" fill="#888">reads panel @api props &#x2192; rebuilds _tabs[] &#x2192; syncs _panelMap</text>
+
+  <!-- PUBLIC API PANEL -->
+  <rect x="450" y="350" width="354" height="120" rx="6" fill="#ffffff" stroke="#d0d5dd" stroke-width="1.5"/>
+  <rect x="462" y="363" width="328" height="22" rx="4" fill="#f5f5f5"/>
+  <text x="474" y="377" font-size="10" fill="#333"><tspan font-weight="600">switchTab</tspan>(value: string) — programmatic tab activation</text>
+  <rect x="462" y="391" width="328" height="22" rx="4" fill="#f5f5f5"/>
+  <text x="474" y="405" font-size="10" fill="#333"><tspan font-weight="600">updateBadge</tspan>(value, count) — update badge at runtime</text>
+  <rect x="462" y="419" width="328" height="22" rx="4" fill="#f5f5f5"/>
+  <text x="474" y="433" font-size="10" fill="#333">get <tspan font-weight="600">activeTab</tspan>() &#x2192; string — read current active value</text>
+  <rect x="462" y="447" width="328" height="14" rx="3" fill="#f0fdf4"/>
+  <text x="474" y="457" font-size="9" fill="#166534">c-dynamic-tab-panel: activate()  deactivate()  |  isActive  isLoaded</text>
+
+  <!-- ACCESSIBILITY + VARIANTS -->
+  <rect x="450" y="478" width="354" height="126" rx="6" fill="#ffffff" stroke="#d0d5dd" stroke-width="1.5"/>
+  <text x="462" y="494" font-size="10" font-weight="600" fill="#666" letter-spacing="0.5">ACCESSIBILITY</text>
+  <text x="462" y="510" font-size="9.5" fill="#444">&#x2022; role="tablist" / "tab" / "tabpanel"</text>
+  <text x="462" y="524" font-size="9.5" fill="#444">&#x2022; aria-selected, aria-controls, aria-disabled, aria-hidden</text>
+  <text x="462" y="538" font-size="9.5" fill="#444">&#x2022; aria-label on badge + close button</text>
+  <text x="462" y="552" font-size="9.5" fill="#444">&#x2022; Keyboard: &#x2190; &#x2192; Home End  +  focus management</text>
+  <line x1="462" y1="560" x2="790" y2="560" stroke="#e5e5e5" stroke-width="1"/>
+  <text x="462" y="574" font-size="10" font-weight="600" fill="#666" letter-spacing="0.5">VARIANTS</text>
+  <rect x="462" y="578" width="70" height="16" rx="3" fill="#e8f2ff"/>
+  <text x="497" y="589" text-anchor="middle" font-size="9" fill="#0176d3">default</text>
+  <rect x="538" y="578" width="70" height="16" rx="3" fill="#f5f5f5"/>
+  <text x="573" y="589" text-anchor="middle" font-size="9" fill="#444">scoped</text>
+  <rect x="614" y="578" width="70" height="16" rx="3" fill="#f5f5f5"/>
+  <text x="649" y="589" text-anchor="middle" font-size="9" fill="#444">vertical</text>
+
+  <defs>
+    <marker id="arr-blue" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L7,3.5 Z" fill="#0176d3"/>
+    </marker>
+    <marker id="arr-gray" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 Z" fill="#666"/>
+    </marker>
+  </defs>
+</svg>
